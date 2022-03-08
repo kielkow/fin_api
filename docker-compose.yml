@@ -1,16 +1,16 @@
 version: "3.9"
 
 services:
-  database:
+  fin_api_database:
     image: postgres
-    container_name: database
+    container_name: fin_api_database
     restart: always
     ports: 
       - 5432:5432
     environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=fin_api
+      - POSTGRES_DB=fin_api_database
     volumes:
       - pgdata:/data/postgres
 
@@ -24,9 +24,9 @@ services:
     volumes: 
       - .:/usr/app
     links: 
-      - database
+      - fin_api_database
     depends_on:
-      - database
+      - fin_api_database
 
 volumes:
   pgdata:
