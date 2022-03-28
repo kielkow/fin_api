@@ -30,7 +30,7 @@ describe('Create an Statement', () => {
 
     createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
     createStatementUseCase = new CreateStatementUseCase(
-      usersRepositoryInMemory, 
+      usersRepositoryInMemory,
       statementsRepositoryInMemory
     );
   });
@@ -108,7 +108,6 @@ describe('Create an Statement', () => {
     expect(statement.type).toEqual('withdraw');
     expect(statement.amount).toEqual(50);
   });
-
 
   it('should not be able to create a statement of withdraw with insufficient balance', async () => {
     const user: ICreateUserDTO = {
