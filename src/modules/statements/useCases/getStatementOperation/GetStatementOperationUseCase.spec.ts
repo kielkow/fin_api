@@ -73,4 +73,13 @@ describe('Get an Statement', () => {
     expect(statement.type).toEqual('deposit');
     expect(statement.amount).toEqual(100);
   });
+
+  it('should not be able to get a statement for nonexistent user', async () => {
+    expect(async () => {
+      await getStatementOperationUseCase.execute({
+        user_id: 'invalid-id',
+        statement_id: 'invalid-id'
+      });
+    }).rejects.toBeInstanceOf(AppError);
+  });
 });
