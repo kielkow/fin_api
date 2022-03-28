@@ -82,4 +82,26 @@ describe('Get an Statement', () => {
       });
     }).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not be able to get a statement for nonexistent statement', async () => {
+    const user: ICreateUserDTO = {
+      name: 'jonh doe',
+      email: 'jonhdoe@email.com',
+      password: '123456',
+    };
+
+    await createUserUseCase.execute(user);
+
+    const authenticationInfo = await authenticateUserUseCase.execute({
+      email: user.email,
+      password: user.password,
+    });
+
+    expect(async () => {
+      await getStatementOperationUseCase.execute({
+        user_id: authenticationInfo.user.id,
+        statement_id: 'invalid-id'
+      });
+    }).rejects.toBeInstanceOf(AppError);
+  });
 });
