@@ -35,7 +35,7 @@ describe('Create an Statement', () => {
     );
   });
 
-  it('should be able to create an statement', async () => {
+  it('should be able to create an statement of deposit', async () => {
     const user: ICreateUserDTO = {
       name: 'jonh doe',
       email: 'jonhdoe@email.com',
@@ -52,14 +52,15 @@ describe('Create an Statement', () => {
     const statement = await createStatementUseCase.execute({
       user_id: authenticationInfo.user.id,
       amount: 100,
-      description: 'test',
+      description: 'test of deposit',
       type: OperationType.DEPOSIT
     });
 
     expect(statement).toHaveProperty('id');
     expect(statement.user_id).toEqual(authenticationInfo.user.id);
-    expect(statement.description).toEqual('test');
+    expect(statement.description).toEqual('test of deposit');
     expect(statement.type).toEqual('deposit');
+    expect(statement.amount).toEqual(100);
   });
 
   it('should not be able to create an statement for nonexistent user', async () => {
@@ -73,7 +74,43 @@ describe('Create an Statement', () => {
     }).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to withdraw with insufficient balance', async () => {
+  it('should be able to create an statement of withdraw', async () => {
+    const user: ICreateUserDTO = {
+      name: 'jonh doe',
+      email: 'jonhdoe@email.com',
+      password: '123456',
+    };
+
+    await createUserUseCase.execute(user);
+
+    const authenticationInfo = await authenticateUserUseCase.execute({
+      email: user.email,
+      password: user.password,
+    });
+
+    await createStatementUseCase.execute({
+      user_id: authenticationInfo.user.id,
+      amount: 100,
+      description: 'test of deposit',
+      type: OperationType.DEPOSIT
+    });
+
+    const statement = await createStatementUseCase.execute({
+      user_id: authenticationInfo.user.id,
+      amount: 50,
+      description: 'test of withdraw',
+      type: OperationType.WITHDRAW
+    });
+
+    expect(statement).toHaveProperty('id');
+    expect(statement.user_id).toEqual(authenticationInfo.user.id);
+    expect(statement.description).toEqual('test of withdraw');
+    expect(statement.type).toEqual('withdraw');
+    expect(statement.amount).toEqual(50);
+  });
+
+
+  it('should not be able to create a statement of withdraw with insufficient balance', async () => {
     const user: ICreateUserDTO = {
       name: 'jonh doe',
       email: 'jonhdoe@email.com',
