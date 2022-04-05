@@ -52,4 +52,20 @@ describe('Get Statement Operation Controller', () => {
         expect(response.body.type).toEqual('deposit');
         expect(Number(response.body.amount)).toEqual(100);
     });
+
+    it('should not be able to get info about an statement operation that non exists', async () => {
+        const { body: authInfo } = await request(app).post('/api/v1/sessions').send({
+            email: 'admin@finapi.com.br',
+            password: 'admin',
+        });
+
+        const response = await request(app).get(`/api/v1/statements/45a8869b-b144-40c9-9d55-7f438f4a26c4`).set({
+            Authorization: `Bearer ${authInfo.token}`,
+        });
+
+
+        expect(response.status).toEqual(404);
+        expect(response.body).toHaveProperty('message');
+        expect(response.body.message).toEqual('Statement not found');
+    });
 });
