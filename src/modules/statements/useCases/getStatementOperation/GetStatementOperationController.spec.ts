@@ -63,7 +63,6 @@ describe('Get Statement Operation Controller', () => {
             Authorization: `Bearer ${authInfo.token}`,
         });
 
-
         expect(response.status).toEqual(404);
         expect(response.body).toHaveProperty('message');
         expect(response.body.message).toEqual('Statement not found');
