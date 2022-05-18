@@ -18,6 +18,7 @@ let statementsRepositoryInMemory: InMemoryStatementsRepository;
 enum OperationType {
   DEPOSIT = 'deposit',
   WITHDRAW = 'withdraw',
+  TRANSFER = 'transfer'
 }
 
 describe('Create an Statement', () => {
