@@ -61,7 +61,8 @@ describe('Get Balance', () => {
       user_id: authenticationInfo.user.id,
       amount: 100,
       description: 'test',
-      type: OperationType.DEPOSIT
+      type: OperationType.DEPOSIT,
+      sender_id: null
     });
 
     const balances = await getBalanceUseCase.execute({

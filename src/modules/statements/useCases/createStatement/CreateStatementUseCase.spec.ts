@@ -54,7 +54,8 @@ describe('Create an Statement', () => {
       user_id: authenticationInfo.user.id,
       amount: 100,
       description: 'test of deposit',
-      type: OperationType.DEPOSIT
+      type: OperationType.DEPOSIT,
+      sender_id: null
     });
 
     expect(statement).toHaveProperty('id');
@@ -70,7 +71,8 @@ describe('Create an Statement', () => {
         user_id: 'invalid-id',
         amount: 100,
         description: 'test',
-        type: OperationType.DEPOSIT
+        type: OperationType.DEPOSIT,
+        sender_id: null
       });
     }).rejects.toBeInstanceOf(AppError);
   });
@@ -93,14 +95,16 @@ describe('Create an Statement', () => {
       user_id: authenticationInfo.user.id,
       amount: 100,
       description: 'test of deposit',
-      type: OperationType.DEPOSIT
+      type: OperationType.DEPOSIT,
+      sender_id: null
     });
 
     const statement = await createStatementUseCase.execute({
       user_id: authenticationInfo.user.id,
       amount: 50,
       description: 'test of withdraw',
-      type: OperationType.WITHDRAW
+      type: OperationType.WITHDRAW,
+      sender_id: null
     });
 
     expect(statement).toHaveProperty('id');
@@ -128,7 +132,8 @@ describe('Create an Statement', () => {
       user_id: authenticationInfo.user.id,
       amount: 100,
       description: 'test',
-      type: OperationType.DEPOSIT
+      type: OperationType.DEPOSIT,
+      sender_id: null
     });
 
     expect(async () => {
@@ -136,7 +141,8 @@ describe('Create an Statement', () => {
         user_id: authenticationInfo.user.id,
         amount: 1000,
         description: 'test',
-        type: OperationType.WITHDRAW
+        type: OperationType.WITHDRAW,
+        sender_id: null
       });
     }).rejects.toBeInstanceOf(AppError);
   });

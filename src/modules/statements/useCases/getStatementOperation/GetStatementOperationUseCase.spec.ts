@@ -60,7 +60,8 @@ describe('Get an Statement', () => {
       user_id: authenticationInfo.user.id,
       amount: 100,
       description: 'test of deposit',
-      type: OperationType.DEPOSIT
+      type: OperationType.DEPOSIT,
+      sender_id: null
     });
 
     const statement = await getStatementOperationUseCase.execute({

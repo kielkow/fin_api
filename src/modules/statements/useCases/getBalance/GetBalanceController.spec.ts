@@ -46,10 +46,16 @@ describe('Get Balance Controller', () => {
             Authorization: `Bearer ${authInfo.token}`,
         });
 
+        console.log(response.body);
+
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('balance');
         expect(response.body).toHaveProperty('statement');
         expect(response.body.statement.length).toEqual(1);
+        expect(response.body.statement[0].amount).toEqual(100);
+        expect(response.body.statement[0].description).toEqual('test of deposit');
+        expect(response.body.statement[0].type).toEqual('deposit');
+        expect(response.body.statement[0].sender_id).toEqual(null);
         expect(response.body.balance).toEqual(100);
     });
 });
