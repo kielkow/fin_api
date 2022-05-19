@@ -37,6 +37,9 @@ export class Statement {
   @Column({ type: 'enum', enum: OperationType })
   type: OperationType;
 
+  @Column('uuid')
+  sender_id: string;
+
   @CreateDateColumn()
   created_at: Date;
 
