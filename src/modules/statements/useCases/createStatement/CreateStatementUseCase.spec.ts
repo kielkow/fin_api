@@ -146,4 +146,51 @@ describe('Create an Statement', () => {
       });
     }).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should be able to create an statement of transfer', async () => {
+    const user: ICreateUserDTO = {
+      name: 'jonh doe',
+      email: 'jonhdoe@email.com',
+      password: '123456',
+    };
+
+    const user2: ICreateUserDTO = {
+      name: 'jonh doe second',
+      email: 'jonhdoesecond@email.com',
+      password: '123456',
+    };
+
+    await createUserUseCase.execute(user);
+    await createUserUseCase.execute(user2);
+
+    const authenticationInfo = await authenticateUserUseCase.execute({
+      email: user.email,
+      password: user.password,
+    });
+    const authenticationInfoSecond = await authenticateUserUseCase.execute({
+      email: user2.email,
+      password: user2.password,
+    });
+
+    await createStatementUseCase.execute({
+      user_id: authenticationInfo.user.id,
+      amount: 100,
+      description: 'test of deposit',
+      type: OperationType.DEPOSIT,
+      sender_id: null
+    });
+    const statement = await createStatementUseCase.execute({
+      user_id: authenticationInfo.user.id,
+      amount: 100,
+      description: 'test of transfer',
+      type: OperationType.TRANSFER,
+      sender_id: authenticationInfoSecond.user.id
+    });
+
+    expect(statement).toHaveProperty('id');
+    expect(statement.user_id).toEqual(authenticationInfo.user.id);
+    expect(statement.description).toEqual('test of transfer');
+    expect(statement.type).toEqual('transfer');
+    expect(statement.amount).toEqual(100);
+  });
 });
